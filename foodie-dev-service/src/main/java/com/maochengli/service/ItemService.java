@@ -4,7 +4,9 @@ import com.maochengli.pojo.Items;
 import com.maochengli.pojo.ItemsImg;
 import com.maochengli.pojo.ItemsParam;
 import com.maochengli.pojo.ItemsSpec;
+import com.maochengli.utils.PagedGridResult;
 import com.maochengli.vo.CommentLevelCountsVo;
+import com.maochengli.vo.ItemCommentVo;
 
 import java.util.List;
 
@@ -43,4 +45,7 @@ public interface ItemService {
      * 查询评价等级个数
      */
     public CommentLevelCountsVo queryCommentCounts(String itemId);
+
+    public PagedGridResult queryItemComments(String itemId, Integer level, Integer page, Integer pageSize);
+
 }

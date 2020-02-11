@@ -1,18 +1,24 @@
 package com.maochengli.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.maochengli.enums.CommentLevelEnum;
 import com.maochengli.mapper.*;
 import com.maochengli.pojo.*;
 import com.maochengli.service.ItemService;
+import com.maochengli.service.base.BaseService;
+import com.maochengli.utils.PagedGridResult;
 import com.maochengli.vo.CommentLevelCountsVo;
+import com.maochengli.vo.ItemCommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl extends BaseService implements ItemService {
 
     @Autowired
     private ItemsMapper itemsMapper;
@@ -29,6 +35,8 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemsCommentsMapper itemsCommentsMapper;
 
+    @Autowired
+    private ItemsCustomerMapper itemsCustomerMapper;
 
     @Override
     public Items queryItemById(String itemId) {
@@ -88,4 +96,17 @@ public class ItemServiceImpl implements ItemService {
         return itemsCommentsMapper.selectCount(itemsComments);        
     }
 
+
+    @Override
+    public PagedGridResult queryItemComments(String itemId, Integer level, Integer page, Integer pageSize) {
+        Map<String,Object>  paramsMap = new HashMap<>();
+        paramsMap.put("itemId",itemId);
+
+        if(level != null){
+            paramsMap.put("level",level);
+        }
+        PageHelper.startPage(page,pageSize);
+        List<ItemCommentVo> list = itemsCustomerMapper.queryItemComments(paramsMap);
+        return setPageGrid(list,page);
+    }
 }

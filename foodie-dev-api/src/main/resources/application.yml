@@ -52,3 +52,7 @@ mapper:
   mappers: com.maochengli.base.MyMapper
   not-empty: false
   identity: MYSQL
+##分页插件
+pagehelper:
+  helper-dialect: mysql
+  support-methods-arguments: true
