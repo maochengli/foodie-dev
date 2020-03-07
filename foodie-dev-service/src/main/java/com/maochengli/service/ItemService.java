@@ -46,6 +46,17 @@ public interface ItemService {
      */
     public CommentLevelCountsVo queryCommentCounts(String itemId);
 
+    /**
+     * 分页查询评价
+     * @param itemId
+     * @param level
+     * @param page
+     * @param pageSize
+     * @return
+     */
     public PagedGridResult queryItemComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+
+    public PagedGridResult searchItems(String keyword,String sort,  Integer page, Integer pageSize);
 
 }

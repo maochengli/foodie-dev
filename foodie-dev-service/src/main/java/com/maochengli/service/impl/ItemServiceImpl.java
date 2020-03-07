@@ -9,6 +9,7 @@ import com.maochengli.service.base.BaseService;
 import com.maochengli.utils.PagedGridResult;
 import com.maochengli.vo.CommentLevelCountsVo;
 import com.maochengli.vo.ItemCommentVo;
+import com.maochengli.vo.SearchItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -98,7 +99,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
 
 
     @Override
-    public PagedGridResult queryItemComments(String itemId, Integer level, Integer page, Integer pageSize) {
+    public PagedGridResult  queryItemComments(String itemId, Integer level, Integer page, Integer pageSize) {
         Map<String,Object>  paramsMap = new HashMap<>();
         paramsMap.put("itemId",itemId);
 
@@ -107,6 +108,24 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         }
         PageHelper.startPage(page,pageSize);
         List<ItemCommentVo> list = itemsCustomerMapper.queryItemComments(paramsMap);
+        return setPageGrid(list,page);
+    }
+
+    /**
+     * 搜索商品列表
+     * @param keyword   关键字
+     * @param sort      排序方式
+     * @param page      当前页
+     * @param pageSize  每页数
+     * @return
+     */
+    @Override
+    public PagedGridResult searchItems(String keyword, String sort, Integer page, Integer pageSize) {
+        Map<String,Object>  paramsMap = new HashMap<>();
+        paramsMap.put("keyword", keyword);
+        paramsMap.put("sort", sort);
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemVo>  list = itemsCustomerMapper.searchItems(paramsMap);
         return setPageGrid(list,page);
     }
 }

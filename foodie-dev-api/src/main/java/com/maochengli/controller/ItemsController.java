@@ -70,7 +70,7 @@ public class ItemsController {
         if(page == null){
             page = 1;
         }
-        if (page == null){
+        if (pageSize == null){
             pageSize = 10;
         }
         PagedGridResult pagedGridResult = itemService.queryItemComments(itemId, level, page, pageSize);
@@ -78,7 +78,33 @@ public class ItemsController {
 
     }
 
+    /**
+     * 搜索接口 分页搜索
+     * @param keywords   关键字
+     * @param sort      排序方式
+     * @param page      页数
+     * @param pageSize  每页个数
+     * @return
+     */
+    @RequestMapping("/search")
+    @ApiOperation(value = "商品搜索查询",notes = "搜索分页查询",httpMethod = "GET")
+    public Result search(@ApiParam(name = "关键字", value = "keywords",required = true, example = "肉干") String keywords,
+                         @ApiParam(name = "排序方式", value = "sort",required = true,example = "肉干") String sort,
+                         @ApiParam(name = "page",value = "当前页",required = false,example = "1") Integer page,
+                         @ApiParam(name = "pageSize",value = "每页个数",required = false,example = "10") Integer pageSize){
+        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
+        if(StringUtils.isBlank(keywords)){
+            return Result.errorMsg("关键字不能为空");
+        }
+        if(page == null){
+            page = 1;
+        }
+        if (pageSize == null){
+            pageSize = 10;
+        }
+        return Result.ok(pagedGridResult);
 
+    }
 
 
 }
