@@ -38,13 +38,12 @@
         <if test="paramsMap.level != null and paramsMap.level != ''">
             AND i.comment_level = #{paramsMap.level}
         </if>
-
     </select>
 
     <!--搜索查询-->
-<!--    K: 默认排序-->
-<!--    c: 销量排序-->
-<!--    p: 价格排序-->
+    <!--    K: 默认排序-->
+    <!--    c: 销量排序-->
+    <!--    p: 价格排序-->
     <select id="searchItems" parameterType="map" resultMap="searchItemVo">
         SELECT
             a.id AS itemId,
@@ -60,6 +59,43 @@
             b.is_main = 1
         <if test="paramsMap.keyword != null and paramsMap.keyword != ''">
             AND a.item_name like "%${paramsMap.keyword}%"
+        </if>
+        order by
+        <choose>
+            <when test="paramsMap.sort == &quot;c&quot;">
+                a.sell_counts desc
+            </when>
+            <when test="paramsMap.sort == &quot;p&quot;">
+                c.price_discount asc
+            </when>
+            <when test="paramsMap.sort == &quot;k&quot;">
+                a.item_name asc
+            </when>
+        </choose>
+    </select>
+
+
+
+
+    <!--根据三级分类查询-->
+    <!--    K: 默认排序-->
+    <!--    c: 销量排序-->
+    <!--    p: 价格排序-->
+    <select id="searchItemsByCartId" parameterType="map" resultMap="searchItemVo">
+        SELECT
+        a.id AS itemId,
+        a.item_name AS itemName,
+        a.sell_counts AS sellCounts,
+        b.url AS imgUrl,
+        c.price_discount AS price
+        FROM
+        items a
+        LEFT JOIN items_img b ON a.id = b.item_id
+        LEFT JOIN ( SELECT item_id, MIN( price_discount ) AS price_discount FROM items_spec GROUP BY item_id ) c ON a.id = c.item_id
+        WHERE
+        b.is_main = 1
+        <if test="paramsMap.catId != null and paramsMap.catId != ''">
+            AND a.cat_id = #{paramsMap.catId}
         </if>
         order by
         <choose>

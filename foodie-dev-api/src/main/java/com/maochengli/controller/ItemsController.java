@@ -78,6 +78,8 @@ public class ItemsController {
 
     }
 
+
+
     /**
      * 搜索接口 分页搜索
      * @param keywords   关键字
@@ -88,11 +90,11 @@ public class ItemsController {
      */
     @RequestMapping("/search")
     @ApiOperation(value = "商品搜索查询",notes = "搜索分页查询",httpMethod = "GET")
-    public Result search(@ApiParam(name = "关键字", value = "keywords",required = true, example = "肉干") String keywords,
-                         @ApiParam(name = "排序方式", value = "sort",required = true,example = "肉干") String sort,
-                         @ApiParam(name = "page",value = "当前页",required = false,example = "1") Integer page,
+    public Result search(@ApiParam(name = "keywords", value = "关键字",required = true, example = "肉干") String keywords,
+                         @ApiParam(name = "sort", value = "排序方式",required = true,example = "k") String sort,
+                         @ApiParam(name = "page",   value = "当前页",required = false,example = "1") Integer page,
                          @ApiParam(name = "pageSize",value = "每页个数",required = false,example = "10") Integer pageSize){
-        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
+
         if(StringUtils.isBlank(keywords)){
             return Result.errorMsg("关键字不能为空");
         }
@@ -102,9 +104,40 @@ public class ItemsController {
         if (pageSize == null){
             pageSize = 10;
         }
+
+        PagedGridResult pagedGridResult = itemService.searchItems(keywords, sort, page, pageSize);
         return Result.ok(pagedGridResult);
 
     }
 
 
+
+
+    /**
+     * 搜索接口 分页搜索
+     * @param catId     分类id
+     * @param sort      排序方式
+     * @param page      页数
+     * @param pageSize  每页个数
+     * @return
+     */
+    @RequestMapping("/catItems")
+    @ApiOperation(value = "商品搜索查询",notes = "搜索分页查询",httpMethod = "GET")
+    public Result searchByCat(@ApiParam(name = "catId", value = "分类Id",required = true, example = "肉干") Integer catId,
+                            @ApiParam(name = "sort", value = "排序方式",required = true,example = "k") String sort,
+                             @ApiParam(name = "page",   value = "当前页",required = false,example = "1") Integer page,
+                            @ApiParam(name = "pageSize",value = "每页个数",required = false,example = "10") Integer pageSize){
+
+        if(catId == null){
+            return Result.errorMsg("分类Id不能为空");
+        }
+        if(page == null){
+            page = 1;
+        }
+        if (pageSize == null){
+            pageSize = 10;
+        }
+        PagedGridResult pagedGridResult = itemService.searchItemsByItemId(catId, sort, page, pageSize);
+        return Result.ok(pagedGridResult);
+    }
 }

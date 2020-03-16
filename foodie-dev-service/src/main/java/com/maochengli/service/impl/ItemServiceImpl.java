@@ -128,4 +128,23 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         List<SearchItemVo>  list = itemsCustomerMapper.searchItems(paramsMap);
         return setPageGrid(list,page);
     }
+
+
+    /**
+     * 根据分类查询
+     * @param catId 分类查询
+     * @param sort  排序方式
+     * @param page  页数
+     * @param pageSize  每页数
+     * @return
+     */
+    @Override
+    public PagedGridResult searchItemsByItemId(Integer catId, String sort, Integer page, Integer pageSize) {
+        Map<String,Object>  paramsMap = new HashMap<>();
+        paramsMap.put("catId", catId);
+        paramsMap.put("sort", sort);
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemVo>  list = itemsCustomerMapper.searchItemsByCartId(paramsMap);
+        return setPageGrid(list,page);
+    }
 }

@@ -22,4 +22,12 @@ public interface ItemsCustomerMapper {
      * @return
      */
     List<SearchItemVo> searchItems(@Param("paramsMap") Map<String, Object> paramsMap);
+
+    /**
+     * 根据分类查询
+     * @param paramsMap
+     * @return
+     */
+    List<SearchItemVo> searchItemsByCartId(@Param("paramsMap") Map<String, Object> paramsMap);
+
 }

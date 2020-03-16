@@ -28,7 +28,6 @@ public class CorsConfig {
         configuration.addAllowedMethod("*");
         //设置允许携带所有header
         configuration.addAllowedHeader("*");
-
         //添加url映射路径
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
